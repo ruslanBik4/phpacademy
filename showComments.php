@@ -16,6 +16,11 @@ function ShowPicture($filename) {
 }
     include_once 'const.php';
 
+var_dump($_SERVER);
+
+var_dump($_ENV);
+
+ $str_= '';
 
     If ( !($rows = fileToArray( FILENAME )) )
         exit(-1);
