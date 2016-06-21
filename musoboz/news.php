@@ -6,6 +6,58 @@
  * Time: 19:15
  * учебный пример для основ PHP
  */
+function correctMonthName($numberMonth)
+{
+    $monthName = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь',
+        'октябрь', 'ноябрь', 'декабрь'];
+
+    switch ($numberMonth) {
+        case 3:
+        case 8:
+            return $monthName[$numberMonth-1] . 'а';
+        default:
+            return mb_substr( $monthName[$numberMonth-1], 0, -1 ) . 'я';
+    }
+
+}
+function formatDate($date)
+{
+    $datePart = explode('/', $date);
+
+
+    return date('d F Y', mktime(0, 0, 0, $datePart[0], $datePart[1], 16 ) );
+//      $datePart[0] . ' ' . correctMonthName( $datePart[1] ) . ' ' . $datePart[2];
+}
+
+function formatSingleArray($key, $value)
+{
+    switch ($key) {
+        case 'date':
+            echo "<td><i>" . formatDate($value) . "</i></td>";
+            break;
+        case 'title':
+            echo "<td><b>$value</b></td>";
+            break;
+        case 'memo':
+            echo "<td>$value</td>";
+            break;
+        case 'cost':
+            echo "<td>$value</td>";
+            break;
+        case 'permission':
+            echo "<td>$value</td>";
+            break;
+        default:
+
+    }
+
+    $value = 'test';
+}
+
+function formatSumma($summa)
+{
+    return '$' . $summa;
+}
 
  const STR_TITLE = 'Новость от Музобоза',
        STR_FOOTER = 'copyright ';
@@ -15,7 +67,7 @@
 
  $arrNews = array(
      [
-         'date' => '21/04/2016',
+         'date' => '21/03/2016',
          'title'=> 'Скоро концерты Машины Времени в Киеве',
          'memo' => 'Легендарная группа Машина Времени скоро посетить город Киев 
                 и окрестности с юбилейными концертами и 
@@ -38,7 +90,7 @@
          'isActual' => false
      ],
      [
-         'date' => '18.06.2016',
+         'date' => '18/06/2016',
          'title'=> 'Скоро концерты Руки вверх! в Киеве',
          'memo' => 'Приезд группы руки ВВерх! 
      отменяется',
@@ -48,7 +100,7 @@
 
      ],
      [
-         'date' =>  '18.06.2016',
+         'date' =>  '18/08/2016',
          'title'=> 'Концерт группы "Океан Эльзы"',
          'memo' => ':Ltv-c!',
          'cost' => 200,
@@ -83,30 +135,15 @@ foreach ($arrNews as $i => $arrSingleNews)
      }
 
      $summa += $arrSingleNews['cost'];
+
+
+
  ?>
      <tr>
          <?php
              foreach($arrSingleNews as $key => $value)
              {
-               switch ($key) {
-                   case 'date':
-                       echo "<td><i>$value</i></td>";
-                       break;
-                   case 'title':
-                       echo "<td><b>$value</b></td>";
-                       break;
-                   case 'memo':
-                       echo "<td>$value</td>";
-                       break;
-                   case 'cost':
-                       echo "<td>$value</td>";
-                       break;
-                   case 'permission':
-                       echo "<td>$value</td>";
-                       break;
-                   default:
-
-               }
+                 formatSingleArray($key, $value);
              }
          ?>
      </tr>
@@ -121,9 +158,11 @@ foreach ($arrNews as $i => $arrSingleNews)
 
  $secret = 'news_bodys';
 
+
+
 ?>
      <tr>
-         <td> <?=$summa?> сайт</td>
+         <td> <?=formatSumma($summa);?> сайт</td>
          <td><?php echo STR_FOOTER; ?></td>
          <td> <?=isset($current_year) ? $current_year : 'неизвестный год'?></td>
      </tr>
