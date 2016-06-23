@@ -20,12 +20,14 @@ function correctMonthName($numberMonth)
     }
 
 }
-function formatDate($date)
+function formatDate($date, $func = 'mktime', $funcDateTransfor = 'strftime')
 {
     $datePart = explode('/', $date);
 
+    date_default_timezone_set('Europe/Kiev');
+    setlocale(LC_ALL, 'ru_RU.UTF-8');
 
-    return date('d F Y', mktime(0, 0, 0, $datePart[0], $datePart[1], 16 ) );
+    return $funcDateTransfor('%d-%b-%G', $func(0, 0, 0, $datePart[1], $datePart[0], $datePart[2] ) );
 //      $datePart[0] . ' ' . correctMonthName( $datePart[1] ) . ' ' . $datePart[2];
 }
 
@@ -33,7 +35,9 @@ function formatSingleArray($key, $value)
 {
     switch ($key) {
         case 'date':
-            echo "<td><i>" . formatDate($value) . "</i></td>";
+
+            $formatDate = formatDate($value );
+            echo "<td><i>" . (strpos($formatDate, '21') !== false ? $formatDate .'!' : $formatDate) . "</i></td>";
             break;
         case 'title':
             echo "<td><b>$value</b></td>";
