@@ -5,7 +5,6 @@
  * Date: 23.06.16
  * Time: 20:36
  */
-const FILE_COUNT = 'gb/count.txt';
 
 function saveComment($filename) {
 
@@ -37,21 +36,21 @@ function putCount($count) {
 }
 
 function SavePhoto($tempName, $filename, $id) {
-    
+
     $pathTo = 'img/' . $id;
-    
- if ( !file_exists('img') ) {
-     mkdir('img');
- }
 
- if ( !file_exists( $pathTo) ) {
-     mkdir($pathTo);
- }
+    if ( !file_exists('img') ) {
+        mkdir('img');
+    }
 
- move_uploaded_file($tempName, $pathTo . '/' .$filename);
+    if ( !file_exists( $pathTo) ) {
+        mkdir($pathTo);
+    }
+
+    move_uploaded_file($tempName, $pathTo . '/' .$filename);
 }
 
- include_once 'func_print.php';
+include_once 'func_print.php';
 
 if (!isset($_REQUEST['username'])) {
     echo 'Обязательно должно быть имя пользователя!';
@@ -63,62 +62,62 @@ if (!$_REQUEST['comment']) {
     exit(-1);
 }
 
-  $count = getCount();
- 
- if ( !file_exists('gb') ) {
-     mkdir('gb');
- }
+$count = getCount();
 
- saveComment($count . '.txt');
+if ( !file_exists('gb') ) {
+    mkdir('gb');
+}
 
- putCount($count);
- 
+saveComment($count . '.txt');
 
- if ($_FILES['photo']['error'] != 0) {
-     echo 'Error from uploadede file!';
-     exit(-1);
- }
- 
- if ( !strstr($_FILES['photo']['type'], 'image') ) {
-    
+putCount($count);
+
+
+if ($_FILES['photo']['error'] != 0) {
+    echo 'Error from uploadede file!';
+    exit(-1);
+}
+
+if ( !strstr($_FILES['photo']['type'], 'image') ) {
+
     echo 'Not suppported file type!';
     exit(-1);
-    
- }
- 
- 
- if ( ($_FILES['photo']['size'] < 0)  || ($_FILES['photo']['size'] > 5000000) ) {
+
+}
+
+
+if ( ($_FILES['photo']['size'] < 0)  || ($_FILES['photo']['size'] > 5000000) ) {
     echo 'File size not valid!';
     exit(-1);
-    
- }
 
- SavePhoto($_FILES['photo']['tmp_name'], $_FILES['photo']['name'], $count); 
+}
+
+SavePhoto($_FILES['photo']['tmp_name'], $_FILES['photo']['name'], $count);
 
 
- $arrFiles = glob( 'gb/*.txt');
- 
- $text ='';
- 
- foreach($arrFiles as $key => $value) {
-     if($value == FILE_COUNT)
-         continue;
+$arrFiles = glob( 'gb/*.txt');
+
+$text ='';
+
+foreach($arrFiles as $key => $value) {
+    if($value == FILE_COUNT)
+        continue;
 
     $text .= getCommentFromFile($value) . PHP_EOL;
- }
-   
- 
- ?>
- 
-  <table border="1">
-     <thead>
-      <tr>
-          <td>Date</td><td>Name</td> <td>Comment</td>
-      </tr>
-     </thead>
-     <tbody>
-     <?=PrintTable($text)?>
+}
 
-     </tbody>
- </table>
+
+?>
+
+<table border="1">
+    <thead>
+    <tr>
+        <td>Date</td><td>Name</td> <td>Comment</td>
+    </tr>
+    </thead>
+    <tbody>
+    <?=PrintTable($text)?>
+
+    </tbody>
+</table>
  

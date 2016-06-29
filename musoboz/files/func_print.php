@@ -6,6 +6,8 @@
  * Time: 19:10
  */
 
+const FILE_COUNT = 'gb/count.txt';
+
 function getCommentFromFile($filename)
 {
     return file_get_contents($filename);
@@ -13,10 +15,10 @@ function getCommentFromFile($filename)
 
 function PrintTable($text) {
 
-  $search = array( PHP_EOL, ':', ';' );
-  $replaces = array( '</td></tr><tr><td>', '</td><td>', '</td><td>');
+    $search = array( PHP_EOL, ':', ';' );
+    $replaces = array( '</td></tr><tr><td>', '</td><td>', '</td><td>');
 
-  return '<tr><td>' . str_replace( $search, $replaces,  $text ) ;
+    return '<tr><td>' . str_replace( $search, $replaces,  $text ) ;
 }
 
 /*
