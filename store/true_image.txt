@@ -1,0 +1,2 @@
+img/1/corel.jpg
+img/1/fancybox_overlay.png
