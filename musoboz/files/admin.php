@@ -24,7 +24,7 @@ function GetImages( $dir = 'img/' ) {
 
 function Secret() {
     
-    iF ($_COOKIE['login'])
+    iF ($_COOKIE['login'] && $_REQUEST['login'] == $_COOKIE['login'])
         return true;
         
     $arrLogin = file('pswd');
@@ -35,7 +35,7 @@ function Secret() {
         
         $arrStroka = explode(';', $stroka);
         
-        $result = ($_POST['login'] == trim($arrStroka[0]) ) && ($_POST['unlogin'] == trim($arrStroka[1]) );
+        $result = ($_REQUEST['login'] == trim($arrStroka[0]) ) && ($_REQUEST['unlogin'] == trim($arrStroka[1]) );
         
         if ($result)
             break;
@@ -45,7 +45,7 @@ function Secret() {
     return $result;
 }
 
-print_r($_SERVER);
+//print_r($_SERVER);
 
    iF (!isset($_SERVER['PHP_AUTH_USER']) || ($_SERVER['PHP_AUTH_USER'] != 'admin') || $_SERVER['PHP_AUTH_PW'] != '12345') {
          header('WWW-Authenticate: Basic realm="SHOW task"');
@@ -56,22 +56,25 @@ print_r($_SERVER);
 
  header('Cache-Control: public, max-age=3600');
 
+ include 'views/main.html';
+
  if ( !Secret() ) {
   header('Content-Type: text/html; charset=cp1251');
   header('Cache-Control: public, must-revalidate');
-     echo 'Not login & password ';
-//    include 'login.html';
+     $textErrorMessage = 'Not login & password ';
+     $showLoginForm = 'block';
+     $showGallery = 'none';
+     include('views/login.html');
 }
  else {
-     setcookie('login', $_POST['login'], time()+3600);
+     setcookie('login', $_REQUEST['login'], time()+600);
+     $showLoginForm = 'none';
+     $showGallery = 'block';
+     
+    $loginName = $_COOKIE['login'] ? : $_REQUEST['login'];
+ 
+    $textImages = GetImages();
+
+
+    include('views/gallery.html');
  }
- 
- 
-
-
- $_SESSION['login-user'] = $_POST['login'];
-
- 
- echo "Привет, " . $_COOKIE['login'];
- 
- echo GetImages();

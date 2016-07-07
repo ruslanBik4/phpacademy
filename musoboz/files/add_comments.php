@@ -103,7 +103,7 @@ foreach($arrFiles as $key => $value) {
     if($value == FILE_COUNT)
         continue;
 
-    $text .= getCommentFromFile($value) . PHP_EOL;
+    $text .= getCommentFromFile($value) . PHP_EOL; 
 }
 
 
