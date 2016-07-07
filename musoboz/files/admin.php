@@ -24,7 +24,7 @@ function GetImages( $dir = 'img/' ) {
 
 function Secret() {
     
-    iF ($_COOKIE['login'] && $_REQUEST['login'] == $_COOKIE['login'])
+    iF (@$_COOKIE['login'] && $_REQUEST['login'] == $_COOKIE['login'])
         return true;
         
     $arrLogin = file('pswd');
@@ -56,7 +56,6 @@ function Secret() {
 
  header('Cache-Control: public, max-age=3600');
 
- include 'views/main.html';
 
  if ( !Secret() ) {
   header('Content-Type: text/html; charset=cp1251');
@@ -64,17 +63,23 @@ function Secret() {
      $textErrorMessage = 'Not login & password ';
      $showLoginForm = 'block';
      $showGallery = 'none';
-     include('views/login.html');
+     $title = 'not login';
+     $templates = 'login.html';
+     $loginName = 'пожалуйста, зарегистрируйтесь';
 }
  else {
      setcookie('login', $_REQUEST['login'], time()+600);
      $showLoginForm = 'none';
      $showGallery = 'block';
      
-    $loginName = $_COOKIE['login'] ? : $_REQUEST['login'];
+    $loginName = @$_COOKIE['login'] ? : $_REQUEST['login'];
  
     $textImages = GetImages();
 
-
-    include('views/gallery.html');
+     $title = 'Админский доступ';
+     $templates = 'gallery.html';
  }
+
+include 'views/main.html';
+
+include 'http://www.google.com.ua';
