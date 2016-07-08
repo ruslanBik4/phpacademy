@@ -26,7 +26,7 @@ function fileToArray( $filename ) {
 
 function GetDBParams() {
     
-    return fileToArray( 'db_config.sys' );
+    return fileToArray( 'config/db_config.sys' );
 }
 
 

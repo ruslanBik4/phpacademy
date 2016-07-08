@@ -5,6 +5,9 @@
  * Date: 27.05.16
  * Time: 19:25
  */
+
+include 'models/dbConnect.php';
+
 function GetFilename() {
     
  if ( !file_exists('img') )
@@ -35,21 +38,22 @@ function GetFilename() {
 function SaveToDB() {
     
     if ( !($params = GetDBParams()) )
-        die('Not connect to DB');
+        die('Not have parameters for connect DB');
         
-    $connetion = mysql_connect( $params[0], $params[1], $params[2] );
+    $connetion = new dbConnect( $params );
     
     $sql = "INSERT INTO comments (`name_user`, `memo`, `idTovar`, `rating` ) VALUES ( '{$_REQUEST['nameCustomer']}', '{$_REQUEST['comment']}', {$_REQUEST['idTovar']}, {$_REQUEST['reting']} )";
     
-    $resultQuery = mysql_db_query( $params[3], $sql);
+    $resultQuery = $connetion->queryInsert($sql);
     
-    $errorText = mysql_error();
+    $errorText = $connetion->getError();
      
-     mysql_close($connetion);
+//     $connetion;
      
     if (!$resultQuery)
      die('Not valid SQL-query: "' . $sql . '" Сервер ответил : "' . $errorText . '"' );
 }
+
 function ReadAntimat( $filename ) {
 
  If ( !($rows = fileToArray( $filename )) )
