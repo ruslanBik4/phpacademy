@@ -8,23 +8,46 @@
  */
 class dbConnect
 {
-    private $parameters = array();
+    var $parameters = array();
     private $connection = null;
     public $lastError;
     
-    public function __construct(array $parameters)
+    public function __construct(array $params)
     {
-        foreach ($parameters as $key => $value) {
+        foreach ($params as $key => $value) {
             $this->parameters[$key] = $value;
         }
-        
-        $this->connection = mysqli_connect( $parameters[0], $parameters[1], $parameters[2], $parameters[3] );
+    }
+
+    public function openConnetcion()
+    {
+        $this->connection = mysqli_connect(
+            $this->parameters['userName'],
+            $this->parameters[1],
+            $this->parameters[2],
+            $this->parameters[3]
+        );
         
     }
-    
-    public function querySelect($sql) 
+
+    /**
+     * @param array $fields ($key - name fields, $value - alias
+     * @param $table
+     * @param $where
+     * @return bool|mysqli_result
+     */
+    public function querySelect(array $fields, $table, $where)
     {
-        
+        $sql = 'select ';
+        $comma = '';
+
+        foreach($fields as $key => $value) {
+            $sql .= "$comma $key as '$value'";
+            $comma = ",";
+        }
+        $sql .= " from $table ". ($where ? " where$where" : '');
+
+        return  mysqli_query( $this->connection, $sql);
     }
     
     public function queryInsert($sql)
@@ -45,6 +68,7 @@ class dbConnect
     {
         // TODO: Implement __destruct() method.
         mysqli_close($this->connection);
+        echo '<br> Class destruct!';
     }
 
 }
