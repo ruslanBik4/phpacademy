@@ -6,7 +6,7 @@
  * Time: 19:25
  */
 
-include 'models/dbConnect.php';
+require_once 'models/dbConnect.php';
 
 function GetFilename() {
     
@@ -41,8 +41,10 @@ function SaveToDB() {
         die('Not have parameters for connect DB');
         
     $connetion = new dbConnect( $params );
-    
+
     $sql = "INSERT INTO comments (`name_user`, `memo`, `idTovar`, `rating` ) VALUES ( '{$_REQUEST['nameCustomer']}', '{$_REQUEST['comment']}', {$_REQUEST['idTovar']}, {$_REQUEST['reting']} )";
+    
+    $connetion->openConnetcion();
     
     $resultQuery = $connetion->queryInsert($sql);
     
