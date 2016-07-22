@@ -40,7 +40,7 @@ function ShowAllImage( $path ) {
                 
             $text = $_SESSION['login'] . '<br>'. ShowAllImage( 'img' );
         ?>
-          <form method="post" action="save_permission.php" id="fSavePerm" target="ifResult">
+          <form method="post" action="../save_permission.php" id="fSavePerm" target="ifResult">
               <button value="submit"> Сохранить изменения! </button>
           </form>
           <iframe name='ifResult'>
